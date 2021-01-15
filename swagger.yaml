@@ -1,0 +1,246 @@
+openapi: 3.0.2
+info:
+    title: API Surmonte
+    description: |
+        ### Maqueta de documentación para API Surmonte
+        ##### Recursos de la API
+        * proyectos
+        * productos
+            * tipo (departamento|bodega|estacionamiento|mirador)
+        * cotizaciones
+        * reservas
+            * estado (Esperando Aprobación|Aprobada|Rechazada|Promesada)
+        * promesas
+            * estado (Documentada|Esperando Aprobación|Aprobada|Rechazada)
+    version: '0.1.0'
+servers:
+    - url: https://api.surmonte.cl/v1/
+        # description: Servidor principal (No productivo)
+tags:
+    - name: Proyectos
+    - name: Productos
+    - name: Cotizaciones
+    - name: Reservas
+    - name: Promesas
+paths:
+    /proyectos:
+        get:
+            tags:
+                - Proyectos
+            summary: Retorna la lista de proyectos activos.
+            # description: Optional extended description in CommonMark or HTML
+            responses:
+                200:
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Proyectos'
+                400:
+                    description: Invalid status value
+                    content: {}
+                default:
+                        description: Error
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: "#/components/schemas/ErrorResponse"
+    /proyectos/{id}:
+        get:
+            tags:
+                - Proyectos
+            summary: Retorna los datos del proyecto especificado por ID.
+            # description: Optional extended description in CommonMark or HTML
+            # parameters:
+            #     - name: id
+            #     in: path
+            #     required: true
+            #     # description: Parameter description in CommonMark or HTML.
+            #     schema:
+            #         type : integer
+            #         format: int
+            #         minimum: 1
+            responses:
+                200:
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Proyecto'
+                400:
+                    description: Invalid status value
+                    content: {}
+                default:
+                        description: Error
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: "#/components/schemas/ErrorResponse"
+    /proyectos/{id}/productos:
+        get:
+            tags:
+            - Proyectos
+            summary: Retorna la lista de productos del proyecto especificado.
+            # description: Optional extended description in CommonMark or HTML
+            # parameters:
+            # - name: id
+            #     in: path
+            #     required: true
+            #     # description: Parameter description in CommonMark or HTML.
+            #     schema:
+            #     type : integer
+            #     format: int
+            #     minimum: 1
+            responses:
+                        200:
+                            description: successful operation
+                            content:
+                                application/json:
+                                    schema:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Proyectos'
+                        400:
+                            description: Invalid status value
+                            content: {}
+                        default:
+                            description: Error
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: "#/components/schemas/ErrorResponse"
+    /proyectos/{id}/productos/{id}:
+        get:
+            tags:
+            - Productos
+            summary: Retorna la lista de productos del proyecto especificado.
+            # description: Optional extended description in CommonMark or HTML
+            # parameters:
+            # - name: id
+            #     in: path
+            #     required: true
+            #     # description: Parameter description in CommonMark or HTML.
+            #     schema:
+            #     type : integer
+            #     format: int
+            #     minimum: 1
+            responses:
+                        200:
+                            description: successful operation
+                            content:
+                                application/json:
+                                    schema:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Proyectos'
+                        400:
+                            description: Invalid status value
+                            content: {}
+                        default:
+                            description: Error
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: "#/components/schemas/ErrorResponse"
+    /cotizaciones:
+        get:
+            tags:
+                - Cotizaciones
+            summary: Retorna la lista de productos del proyecto especificado.
+            # description: Optional extended description in CommonMark or HTML
+            # parameters:
+            #     - name: id
+            #     in: path
+            #     required: true
+            #     # description: Parameter description in CommonMark or HTML.
+            #     schema:
+            #         type : integer
+            #         format: int
+            #         minimum: 1
+            responses:
+                    200:
+                        description: successful operation
+                        content:
+                            application/json:
+                                schema:
+                                    type: array
+                                    items:
+                                        $ref: '#/components/schemas/Cotizaciones'
+                    400:
+                        description: Invalid status value
+                        content: {}
+                    default:
+                        description: Error
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: "#/components/schemas/ErrorResponse"
+
+        post:
+            tags:
+            - Cotizaciones
+            summary: Agrega una nueva cotización al sistema.
+            # operationId: addCotization
+            requestBody:
+                description: Objeto cotizacion que se necesita agregar
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Cotizacion'
+                required: true
+            responses:
+                405:
+                    description: Invalid input
+                    content: {}
+            # security:
+            # - petstore_auth:
+            #     - write:pets
+            #     - read:pets
+            # x-codegen-request-body-name: body
+components:
+    schemas:
+        # Schema for error response body
+        Cotizaciones:
+            type: object
+            properties:
+                property:
+                    type: integer
+        Proyectos:
+            type: object
+            properties:
+                property:
+                    type: integer
+        Proyecto:
+            type: object
+            properties:
+                id:
+                    type: integer
+                nombre:
+                    type: string
+                productos:
+                    $ref: '#/components/schemas/Productos'
+        Productos:
+            type: object
+            properties:
+                property:
+                    type: integer
+
+        Cotizacion:
+            type: object
+            properties:
+                property:
+                    type: integer
+        ErrorResponse:
+            type: object
+            properties:
+                code:
+                    type: string
+                message:
+                    type: string
+            required:
+                - code
+                - message
